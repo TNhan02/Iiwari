@@ -1,7 +1,6 @@
 import json
 import pandas as pd
 import pyodbc as sql
-import csv
 
 def module_info(mod):
    print(mod+" module  missing")
