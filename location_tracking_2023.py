@@ -1,6 +1,7 @@
 import json
-import pandas as pd
 import pyodbc as sql
+
+buffer = [] # buffer for adding data rows to SQL server
 
 def module_info(mod):
    print(mod+" module  missing")
@@ -18,11 +19,19 @@ except:
    module_info("requests")
 
 def on_message(ws, message):
-   d = json.loads(message)
-   print(d)
+   global buffer
 
+   d = json.loads(message) # parse json data
+   print(d)
    if("x" in d):
-      import_csv_to_sql(d)
+      buffer.append(d)
+
+      if(buffer.count() == 5):
+         import_to_sql(buffer)
+         print("{} new rows of data is inserted successfully".format(count))
+
+         # reset buffer after each 5 rows
+         buffer = []
    else:
       print("Key doesn't exist in JSON data")
 
@@ -37,12 +46,21 @@ def sql_connection():
    print("SQL server is connected")
    return cursor
 
-def import_csv_to_sql(content):
+def import_to_sql(list):
    db = sql_connection()
-   db.execute("INSERT INTO position(ts, node, x, y, z, q, alg) VALUES (?,?,?,?,?,?,?)",
-             content['ts'], content['node'], content['x'], content['y'], content['z'], content['q'], content['alg'])
-   db.commit()
-   print("CSV file is imported successfully!")                 
+   
+   # add each row in a list to server
+   for content in list:
+      db.execute("INSERT INTO position(ts, node, x, y, z, q, alg) VALUES (?,?,?,?,?,?,?)",
+            content['ts'],
+            content['node'],
+            content['x'], 
+            content['y'], 
+            content['z'], 
+            content['q'], 
+            content['alg'])
+   
+   db.commit()                 
 
 def on_error(ws, error):
    print(error)
