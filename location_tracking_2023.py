@@ -2,6 +2,10 @@ import json
 import pyodbc as sql
 
 buffer = [] # buffer for adding data rows to SQL server
+count = 0 # count for adding data rows to SQL server
+robot_tag = "0d47-3234-0474-81b9"
+person_tag = "0d47-3234-0474-848b" # could be changed since this one doesn't work at all at 17.11.2023
+url = "wss://dash.iiwari.cloud/api/v1/sites/017bcaaf-a074-f5fc-0b1e-083f26226deb"
 
 def module_info(mod):
    print(mod+" module  missing")
@@ -18,22 +22,34 @@ try:
 except:
    module_info("requests")
 
-def on_message(ws, message):
-   global buffer
+def on_message(path, message):
+   global buffer, count
+   if(path == "locations/stream"):
+      d = json.loads(message) # parse json data
+      print(d)
 
-   d = json.loads(message) # parse json data
-   print(d)
-   if("x" in d):
-      buffer.append(d)
+      if("x" in d):
+         buffer.append(d)
+         count += 1
 
-      if(buffer.count() == 5):
-         import_to_sql(buffer)
-         print("{} new rows of data is inserted successfully".format(count))
+         if(count == 5):
+            import_to_sql(buffer)
+            print("{} new rows of data is inserted successfully".format(count))
 
          # reset buffer after each 5 rows
          buffer = []
-   else:
-      print("Key doesn't exist in JSON data")
+         count = 0
+      else:
+         print("Key doesn't exist in JSON data")
+   elif(path == "events/stream"):
+      d = json.loads(message) # parse json data
+      print("Button is pressed "+d)
+
+      # type 10 = button press
+      if(("type" in d) and (d['type'] == 10)):
+         return True
+      return False
+
 
 def sql_connection():
    connection = sql.connect('Driver={SQL Server};'
@@ -60,7 +76,7 @@ def import_to_sql(list):
             content['q'], 
             content['alg'])
    
-   db.commit()                 
+   db.commit()       
 
 def on_error(ws, error):
    print(error)
@@ -79,6 +95,32 @@ def login(email,pw):
    print("Login success!")
    return r
 
+def streaming(token):
+   query = url + "/locations/stream?token=" + token['token']
+   cookies="; ".join(["%s=%s" %(i, j) for i, j in r.cookies.items()])
+
+   wss = websocket.WebSocketApp( query,
+                                 on_open = on_open,
+                                 on_message = on_message,
+                                 on_error = on_error,
+                                 on_close = on_close,
+                                 cookie = cookies)
+
+   wss.run_forever()
+
+def button_pressed(site, token):
+   query = url + "/events/stream?token=" + token['token']
+   cookies="; ".join(["%s=%s" %(i, j) for i, j in r.cookies.items()])
+
+   wss = websocket.WebSocketApp( query,
+                                 on_open = on_open,
+                                 on_message = on_message,
+                                 on_error = on_error,
+                                 on_close = on_close,
+                                 cookie = cookies)
+   
+   wss.run_forever()
+
 if __name__ == "__main__":
    
    email ="savonia"
@@ -86,17 +128,7 @@ if __name__ == "__main__":
    site  ="017bcaaf-a074-f5fc-0b1e-083f26226deb" #savonia AMK
 
    r=login(email,pw)
-
    token = r.json()
 
-   query="wss://dash.iiwari.cloud/api/v1/sites/"+site+"/locations/stream?token="+token['token']
-   cookies="; ".join(["%s=%s" %(i, j) for i, j in r.cookies.items()])
-
-   wss = websocket.WebSocketApp( query,
-                                 on_open=on_open,
-                                 on_message=on_message,
-                                 on_error=on_error,
-                                 on_close=on_close,
-                                 cookie=cookies)
-
-   wss.run_forever()
+   streaming(site, token)
+   button_pressed(site, token)
