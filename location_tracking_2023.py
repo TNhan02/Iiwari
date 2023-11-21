@@ -3,8 +3,6 @@ import pyodbc as sql
 
 buffer = [] # buffer for adding data rows to SQL server
 count = 0 # count for adding data rows to SQL server
-robot_tag = "0d47-3234-0474-81b9"
-person_tag = "0d47-3234-0474-848b" # could be changed since this one doesn't work at all at 17.11.2023
 url = "wss://dash.iiwari.cloud/api/v1/sites/017bcaaf-a074-f5fc-0b1e-083f26226deb"
 
 def module_info(mod):
@@ -22,8 +20,10 @@ try:
 except:
    module_info("requests")
 
-def on_message(path, message):
+def on_message(ws, message):
    global buffer, count
+   path = ws.sock_opt.sock.getpeername()[2]
+
    if(path == "locations/stream"):
       d = json.loads(message) # parse json data
       print(d)
@@ -43,10 +43,11 @@ def on_message(path, message):
          print("Key doesn't exist in JSON data")
    elif(path == "events/stream"):
       d = json.loads(message) # parse json data
-      print("Button is pressed "+d)
 
       # type 10 = button press
       if(("type" in d) and (d['type'] == 10)):
+         print("Button is pressed \n")
+         print(d)
          return True
       return False
 
