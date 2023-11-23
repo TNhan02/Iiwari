@@ -27,4 +27,5 @@ def streaming_endpoints():
     event_thread.start()
 
 if __name__ == "__main__":
+   # stream endpoints simutaneously
    streaming_endpoints()
