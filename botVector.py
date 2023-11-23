@@ -9,7 +9,7 @@ class Point():
     def getX(self):
         return self.x
     
-    def getY(self):
+    def getX(self):
         return self.y
     
 
@@ -17,7 +17,7 @@ class Point():
 class Vector():
     def __init__(self, finalPoint: Point, initialPoint: Point):
         self.x = finalPoint.getX() - initialPoint.getX()
-        self.y = finalPoint.getY() - initialPoint.getY()
+        self.y = finalPoint.getX() - initialPoint.getX()
 
 
     def getX(self):

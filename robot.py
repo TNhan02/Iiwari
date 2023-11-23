@@ -1,4 +1,5 @@
 #this is the 2nd python script to add robot's algorithm
+import time
 from botVector import *
 from enum import Enum
 import location_tracking_2023 as data_streaming
@@ -27,30 +28,82 @@ person_x = 0
 person_y = 0
 bot_x = 0
 bot_y = 0
+satisf_inaccuracy = 3
 
+#TODO: finish a function
 #should return a current position of a tag
 def getLocation(tag_code: str) -> Point:
     pass
 
 
-def move():
-    motor(1000, 1000, 1000, 1000)
+#TODO finish a function
+#should return a status of button (is it pressed or not) 
+#if true - return 2
+def getStatus(tag: str) -> int:
+    pass
+
 
 # for demonstration purpose 
 # the main idea for the demonstration algorithm is to align first (x-coordinate) 
 # then (y-coordinate) with usage of vectors
-def movement(p_location: Point, buttonState: bool, state: int) -> None:
-    r_location = getLocation(robot_tag)
-    (r_x, r_y) = (r_location.getX(), r_location.getY())
-    (p_x, p_y) = (p_location.getX(), )
-    
-    if(r_x - p_x > ):
-        motor.setMotorModel(-1000,-1000,-1000,-1000)
-    if(r_x < p_x):
-    
+def move_x(p_location: Point, r_location: Point) -> None:
+    p_x = p_location.getX()
+    r_x = r_location.getX()
+    error = p_x - r_x
+    #move forward
+    if(error > 0):
+        while(abs(error) > satisf_inaccuracy):
+            motor.setMotorModel(1000,1000,1000,1000)
+            r_x = getLocation(robot_tag).getX()
+            error = p_x - r_x
+    #move backward
+    if(error < 0):
+        while(abs(error) > satisf_inaccuracy):
+            motor.setMotorModel(-1000,-1000,-1000,-1000)
+            r_x = getLocation(robot_tag).getX()
+            error = p_x - r_x
 
 
+
+def move_y(p_location: Point, r_location: Point) -> None:
+    p_y = p_location.getY()
+    r_y = r_location.getY()
+    error = p_y - r_y
+    #move forward
+    if(error > 0):
+        while(abs(error) > satisf_inaccuracy):
+            motor.setMotorModel(1000,1000,1000,1000)
+            r_y = getLocation(robot_tag).getY()
+            error = p_y - r_y
+    #move backward
+    if(error < 0):
+        while(abs(error) > satisf_inaccuracy):
+            motor.setMotorModel(-1000,-1000,-1000,-1000)
+            r_y = getLocation(robot_tag).getY()
+            error = p_y - r_y
+
+
+def turn(p_location: Point, r_location: Point) -> None:
+    r_y = r_location.getY()
+    p_y = p_location.getY()
+    #turn right 90 degrees
+    if(r_y - p_y > 0):
+        motor.setMotorModel(100, 2000, -2000, 100)
+    #turn left 90 degrees 
+    if(r_y - p_y < 0):
+        motor.setMotorModel(-2000, 100, 100, 2000)
+
+
+def movement(p_location: Point) -> None:
+    if(getStatus(person_tagW) == status.IDLE):
+        pass
+        #think what it can do while waiting
     
+    if(getStatus(person_tag) == status.DUTY):
+        r_location = getLocation(robot_tag)
+        move_x(p_location, r_location)
+        turn(p_location, r_location)
+        move_y(p_location, r_location)
 
 
 
@@ -64,3 +117,5 @@ def approaching_person(tag_id):
     else:
         print("Robot on idle state")
         
+def main():
+    pass
