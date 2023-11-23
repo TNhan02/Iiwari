@@ -1,9 +1,12 @@
+import threading
 import json
 import pyodbc as sql
 
 buffer = [] # buffer for adding data rows to SQL server
 count = 0 # count for adding data rows to SQL server
-url = "wss://dash.iiwari.cloud/api/v1/sites/017bcaaf-a074-f5fc-0b1e-083f26226deb"
+url = "wss://dash.iiwari.cloud/api/v1/sites/017bcaaf-a074-f5fc-0b1e-083f26226deb/"
+email ="savonia"
+pw    ="mAhti5aar1"
 
 def module_info(mod):
    print(mod+" module  missing")
@@ -21,36 +24,25 @@ except:
    module_info("requests")
 
 def on_message(ws, message):
-   global buffer, count
-   path = ws.sock_opt.sock.getpeername()[2]
+   def run(*args):
+      global buffer, count
 
-   if(path == "locations/stream"):
-      d = json.loads(message) # parse json data
-      print(d)
+      d = json.loads(message)
 
       if("x" in d):
-         buffer.append(d)
-         count += 1
+         print(d)
+         #buffer.append(d)
+         #count += 1
 
-         if(count == 5):
-            import_to_sql(buffer)
-            print("{} new rows of data is inserted successfully".format(count))
+         #if(count == 5):
+            #import_to_sql(buffer)
+            #print("{} new rows of data inserted successfully".format(count))
 
-         # reset buffer after each 5 rows
-         buffer = []
-         count = 0
+         #buffer = []
+         #count = 0
       else:
          print("Key doesn't exist in JSON data")
-   elif(path == "events/stream"):
-      d = json.loads(message) # parse json data
-
-      # type 10 = button press
-      if(("type" in d) and (d['type'] == 10)):
-         print("Button is pressed \n")
-         print(d)
-         return True
-      return False
-
+   threading.Thread(target = run).start()
 
 def sql_connection():
    connection = sql.connect('Driver={SQL Server};'
@@ -83,10 +75,10 @@ def on_error(ws, error):
    print(error)
 
 def on_close(ws, close_status_code, close_msg):
-   print("### closed ###")
+   print("### location streaming closed ###")
 
 def on_open(ws):
-   print("### opened ###")
+   print("### location streaming opened ###")
 
 def login(email,pw):
    H = {'Content-type': 'application/json', 'Accept': 'text/plain'}
@@ -96,8 +88,11 @@ def login(email,pw):
    print("Login success!")
    return r
 
-def streaming(token):
-   query = url + "/locations/stream?token=" + token['token']
+def location_streaming():
+   r = login(email, pw)
+   token = r.json()
+
+   query = url + "locations/stream?token=" + token['token']
    cookies="; ".join(["%s=%s" %(i, j) for i, j in r.cookies.items()])
 
    wss = websocket.WebSocketApp( query,
@@ -107,29 +102,10 @@ def streaming(token):
                                  on_close = on_close,
                                  cookie = cookies)
 
-   wss.run_forever()
-
-def button_pressed(site, token):
-   query = url + "/events/stream?token=" + token['token']
-   cookies="; ".join(["%s=%s" %(i, j) for i, j in r.cookies.items()])
-
-   wss = websocket.WebSocketApp( query,
-                                 on_open = on_open,
-                                 on_message = on_message,
-                                 on_error = on_error,
-                                 on_close = on_close,
-                                 cookie = cookies)
-   
    wss.run_forever()
 
 if __name__ == "__main__":
-   
-   email ="savonia"
-   pw    ="mAhti5aar1"
-   site  ="017bcaaf-a074-f5fc-0b1e-083f26226deb" #savonia AMK
+   #r=login(email,pw)
+   #token = r.json()
 
-   r=login(email,pw)
-   token = r.json()
-
-   streaming(site, token)
-   button_pressed(site, token)
+   location_streaming()
