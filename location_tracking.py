@@ -1,8 +1,10 @@
 import threading
 import json
 import pyodbc as sql
+from botVector import *
+from button_press import *
 
-buffer = [] # buffer for adding data rows to SQL server
+buffer_location = [] # buffer for adding data rows to SQL server
 count = 0 # count for adding data rows to SQL server
 url = "wss://dash.iiwari.cloud/api/v1/sites/017bcaaf-a074-f5fc-0b1e-083f26226deb/"
 email ="savonia"
@@ -25,12 +27,14 @@ except:
 
 def on_message(ws, message):
    def run(*args):
-      global buffer, count
+      global buffer_location, count
 
       d = json.loads(message)
 
       if("x" in d):
          print(d)
+         buffer_location.append(d)
+         
          #buffer.append(d)
          #count += 1
 
@@ -88,6 +92,14 @@ def login(email,pw):
    print("Login success!")
    return r
 
+def get_location_button_pressed():
+   for data_location in buffer_location:
+      for data_event in buffer_event:
+         if(data_location['node'] == data_event['node'] and is_button_pressed == True):
+            return Point(buffer_location['x'], buffer_location['y'])
+         else:
+            print("Button hasn't been pressed yet")
+
 def location_streaming():
    r = login(email, pw)
    token = r.json()
@@ -105,7 +117,4 @@ def location_streaming():
    wss.run_forever()
 
 if __name__ == "__main__":
-   #r=login(email,pw)
-   #token = r.json()
-
    location_streaming()

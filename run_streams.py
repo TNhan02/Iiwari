@@ -2,10 +2,14 @@ from location_tracking import *
 from button_press import *
 from threading import Thread
 
+#location_event = Thread(target=get_location_button_pressed)
+
 # define alpha for filtering
 alpha = 0.5
 filtered_value = None
 
+#TODO: how to apply it when streaming?
+# this function is used to filter data to make it more calm
 def exponential_filter(incoming_value):
    global filtered_value
 
@@ -18,13 +22,13 @@ def exponential_filter(incoming_value):
 
 # this is used for streaming 2 endpoints at the same time
 def streaming_endpoints():
-    # create websocket threads
-    location_thread = Thread(target=location_streaming)
-    event_thread = Thread(target=event_streaming)
+   # create websocket threads
+   location_thread = Thread(target=location_streaming)
+   event_thread = Thread(target=event_streaming)
 
-    # start the threads
-    location_thread.start()
-    event_thread.start()
+   # start the threads
+   location_thread.start()
+   event_thread.start()
 
 if __name__ == "__main__":
    # stream endpoints simutaneously
