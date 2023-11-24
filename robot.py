@@ -3,8 +3,8 @@ import time
 from botVector import *
 from location_tracking import *
 from button_press import *
-from .Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Motor import *
-from .Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Light import *
+from Iiwari.Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Motor import *
+from Iiwari.Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Light import *
 from enum import Enum
 
 # this class is used for setting the robot's status when an event occurs
@@ -84,6 +84,7 @@ def move_y(p_location: Point, r_location: Point) -> None:
             error = p_y - r_y
 
 
+
 def turn(p_location: Point, r_location: Point) -> None:
     r_y = r_location.getY()
     p_y = p_location.getY()
@@ -95,8 +96,9 @@ def turn(p_location: Point, r_location: Point) -> None:
         motor.setMotorModel(-2000, 100, 100, 2000)
 
 
+
 def movement(p_location: Point) -> None:
-    if(getStatus(person_tagW) == status.IDLE):
+    if(getStatus(person_tag) == status.IDLE):
         pass
         #think what it can do while waiting
     
@@ -117,5 +119,7 @@ def approaching_person(tag_id):
     else:
         print("Robot on idle state")
         
+
+
 def main():
     pass
