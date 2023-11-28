@@ -25,8 +25,8 @@ status = RobotStatus()
 
 # declare main points' coordinates
 
-person_x = 0
-person_y = 0
+person_x = 25
+person_y = 25
 bot_x = 0
 bot_y = 0
 satisf_inaccuracy = 3
@@ -122,5 +122,8 @@ def approaching_person(tag_id):
 
 
 def main():
-    p_loc = get_location_button_pressed()
-    turn(p_location=plo)
+    #test values
+    p_location = Point(0, person_y)
+    r_location = Point()
+
+    turn(p_location, r_location)
