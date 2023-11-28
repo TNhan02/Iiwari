@@ -3,7 +3,8 @@ import time
 from botVector import *
 from location_tracking import *
 from button_press import *
-from Iiwari.Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Motor import *
+from Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Motor import *
+from Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Light import *
 from Iiwari.Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Light import *
 from enum import Enum
 
