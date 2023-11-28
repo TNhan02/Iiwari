@@ -122,4 +122,5 @@ def approaching_person(tag_id):
 
 
 def main():
-    pass
+    p_loc = get_location_button_pressed()
+    turn(p_location=plo)
