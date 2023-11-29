@@ -1,10 +1,10 @@
-import threading
 import json
+import settings # initiate global buffers
+import add_datastream # add data to buffers 
 import pyodbc as sql
 from botVector import *
 from button_press import *
 
-buffer_location = [] # buffer for adding data rows to SQL server
 count = 0 # count for adding data rows to SQL server
 url = "wss://dash.iiwari.cloud/api/v1/sites/017bcaaf-a074-f5fc-0b1e-083f26226deb/"
 email ="savonia"
@@ -26,28 +26,27 @@ except:
    module_info("requests")
 
 def on_message(ws, message):
-   def run(*args):
-      global buffer_location, count
+   global count
 
-      d = json.loads(message)
+   d = json.loads(message)
 
-      if("x" in d):
-         print(d)
-         buffer_location.append(d)
-         
-         #buffer.append(d)
-         #count += 1
+   if("x" in d):
+      print(d)
+      if(settings.is_button_pressed == True):
+         add_datastream.add_location_data(d)
+         print("Button: {}, {}".format(settings.person_location.getX(), settings.person_location.getY()))
+      
+      #buffer.append(d)
+      #count += 1
 
-         #if(count == 5):
-            #import_to_sql(buffer)
-            #print("{} new rows of data inserted successfully".format(count))
+      #if(count == 5):
+         #import_to_sql(buffer)
+         #print("{} new rows of data inserted successfully".format(count))
 
          #buffer = []
          #count = 0
-      else:
-         print("Key doesn't exist in JSON data")
-   threading.Thread(target = run).start()
-
+   else:
+      print("Key doesn't exist in JSON data")
 def sql_connection():
    connection = sql.connect('Driver={SQL Server};'
                       'Server=10.211.48.5;'
@@ -93,12 +92,13 @@ def login(email,pw):
    return r
 
 def get_location_button_pressed():
-   for data_location in buffer_location:
-      for data_event in buffer_event:
-         if(data_location['node'] == data_event['node'] and is_button_pressed == True):
-            return Point(buffer_location['x'], buffer_location['y'])
-         else:
-            print("Button hasn't been pressed yet")
+   """
+   for data_location in settings.buffer_location:
+      for data_event in settings.buffer_event:
+         if(data_location["node"] == data_event["node"] and settings.is_button_pressed == True):
+            print("{}, {}".format(data_location["x"], data_location["y"]))
+            return Point(data_location["x"], data_location["y"])
+   """   
 
 def location_streaming():
    r = login(email, pw)
@@ -108,11 +108,11 @@ def location_streaming():
    cookies="; ".join(["%s=%s" %(i, j) for i, j in r.cookies.items()])
 
    wss = websocket.WebSocketApp( query,
-                                 on_open = on_open,
-                                 on_message = on_message,
-                                 on_error = on_error,
-                                 on_close = on_close,
-                                 cookie = cookies)
+                              on_open = on_open,
+                              on_message = on_message,
+                              on_error = on_error,
+                              on_close = on_close,
+                              cookie = cookies)
 
    wss.run_forever()
 
