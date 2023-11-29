@@ -1,6 +1,6 @@
 import json
-import settings # initiate global buffers
-import add_datastream # add data to buffers 
+import settings # initiate global variables
+import add_datastream # add person location and robot location
 import pyodbc as sql
 from botVector import *
 from button_press import *

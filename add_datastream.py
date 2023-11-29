@@ -18,6 +18,7 @@ def exponential_filter(incoming_value):
 
    return filtered_value
 
+# return person_location - location of person when button is pressed
 def add_location_data(location):
     global filtered_person_x, filtered_person_y
     filtered_person_x = exponential_filter(location["x"])

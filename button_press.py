@@ -1,4 +1,6 @@
 import json
+import settings # initiate global variables 
+import add_datastream # add person location and robot location
 from location_tracking import *
 from botVector import *
 
