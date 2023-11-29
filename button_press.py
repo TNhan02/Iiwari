@@ -25,10 +25,7 @@ except:
    module_info("requests")
 
 def on_message(ws, message):
-   def run(*args):
-      global is_button_pressed, buffer_event
-      d = json.loads(message)
-   
+   d = json.loads(message)
    if("type" in d and d["type"] == 10):
       print(d)
       if(settings.is_button_pressed != True):
