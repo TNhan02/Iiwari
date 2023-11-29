@@ -116,5 +116,6 @@ def location_streaming():
 
    wss.run_forever()
 
+
 if __name__ == "__main__":
    location_streaming()
