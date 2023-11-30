@@ -97,18 +97,56 @@ def turn(p_location: Point, r_location: Point) -> None:
         motor.setMotorModel(-2000, 100, 100, 2000)
 
 
+def check_approach(accept_distance: float) -> bool:
+    #change function
+    r_location = getLocation()
+    r_x = r_location.getX()
+    r_y = r_location.getY()
 
-def movement(p_location: Point) -> None:
-    if(getStatus(person_tag) == status.IDLE):
-        pass
-        #think what it can do while waiting
-    
-    if(getStatus(person_tag) == status.DUTY):
-        r_location = getLocation(robot_tag)
-        move_x(p_location, r_location)
-        turn(p_location, r_location)
-        move_y(p_location, r_location)
+    #change function
+    p_location = getLocation()
+    p_x = p_location.getX()
+    p_y = p_location.getY()
 
+    value = math.sqrt((p_x - r_x)**2 + (p_y - r_y)**2)
+    if(value > accept_distance):
+        return False
+    else:
+        return True
+#Final version of the movement algorithm
+
+def movement() -> None:
+    status = RobotStatus.IDLE.value
+    while True:
+        match (status):
+            case RobotStatus.IDLE.value:
+                if(is_button_pressed):
+                    status = RobotStatus.DUTY.value
+                    break
+                else:
+                    time.sleep(2)
+                    continue
+            
+            case RobotStatus.DUTY.value:
+                #change to appropriate function
+                r_locationInitial = getLocation(robot_tag)
+                motor.setMotorModel(1000,1000,1000,1000)
+                time.sleep(2)
+                motor.destroy()
+                #change to appropriate function
+                p_location = getLocation(person_tag)
+                r_locationCurrent = getLocation(robot_tag)
+
+                r_vector = Vector(r_locationCurrent, r_locationInitial)
+                r_p_vector = Vector(p_location, r_locationCurrent)
+                angle = angleBetweenVectors(r_vector, r_p_vector)
+                #calibration is required 
+                motor.Rotate(angle)
+
+                while(not check_approach(5)):
+                    motor.setMotorModel(1000,1000,1000,1000)
+                motor.destroy()
+                status = RobotStatus.IDLE.value
 
 
 def approaching_person(tag_id):
@@ -128,3 +166,7 @@ def main():
     r_location = Point()
 
     turn(p_location, r_location)
+
+
+if __name__ == '__main__':
+    main()
