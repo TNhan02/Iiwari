@@ -116,6 +116,15 @@ def check_approach(accept_distance: float) -> bool:
         return False
     else:
         return True
+    
+
+def rotate(angle: float) -> None:
+    rotate_angle = 180-angle
+    rotation_time = rotate_angle* (0.88/90)
+    motor.setMotorModel(2000,2000,-2000,-2000)
+    time.sleep(rotation_time)
+    motor.destroy()
+
 #Final version of the movement algorithm
 
 def movement() -> None:
@@ -123,18 +132,18 @@ def movement() -> None:
     while True:
         match (status):
             case RobotStatus.IDLE.value:
-                if(is_button_pressed):
+                if(settings.is_button_pressed):
                     status = RobotStatus.DUTY.value
                     break
                 else:
                     time.sleep(2)
-                    continue
+                continue
             
             case RobotStatus.DUTY.value:
                 #change to appropriate function
                 r_locationInitial = getLocation(robot_tag)
                 motor.setMotorModel(1000,1000,1000,1000)
-                time.sleep(2)
+                time.sleep(1)
                 motor.destroy()
                 #change to appropriate function
                 p_location = getLocation(person_tag)
@@ -144,12 +153,13 @@ def movement() -> None:
                 r_p_vector = Vector(p_location, r_locationCurrent)
                 angle = angleBetweenVectors(r_vector, r_p_vector)
                 #calibration is required 
-                motor.Rotate(angle)
+                rotate(angle)
 
                 while(not check_approach(5)):
                     motor.setMotorModel(1000,1000,1000,1000)
                 motor.destroy()
                 status = RobotStatus.IDLE.value
+                break
 
 
 def approaching_person(tag_id):
