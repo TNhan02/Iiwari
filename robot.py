@@ -41,8 +41,11 @@ def getLocation(tag_code: str) -> Point:
 #TODO finish a function
 #should return a status of button (is it pressed or not) 
 #if true - return 2
-def getStatus(tag: str) -> int:
-    pass
+def getStatus():
+    if(settings.is_button_pressed == True):
+        status = 2
+        return status
+    return status
 
 
 # for demonstration purpose 

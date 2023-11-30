@@ -2,24 +2,6 @@ from location_tracking import *
 from button_press import *
 from threading import Thread
 
-#location_event = Thread(target=get_location_button_pressed)
-
-# define alpha for filtering
-alpha = 0.5
-filtered_value = None
-
-#TODO: how to apply it when streaming?
-# this function is used to filter data to make it more calm
-def exponential_filter(incoming_value):
-   global filtered_value
-
-   if(filtered_value == None):
-      filtered_value = incoming_value
-   else:
-      filtered_value = alpha * incoming_value + (1 - alpha) * incoming_value
-
-   return filtered_value
-
 # this is used for streaming 2 endpoints at the same time
 def streaming_endpoints():
    # create websocket threads
@@ -30,6 +12,8 @@ def streaming_endpoints():
    location_thread.start()
    event_thread.start()
 
+# this is an example of streaming locations and events simutaneously
+# this one should be called similarly in robot.py in the end
 if __name__ == "__main__":
    # stream endpoints simutaneously
    streaming_endpoints()
