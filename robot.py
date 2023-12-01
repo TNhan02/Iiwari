@@ -1,6 +1,7 @@
 #this is the 2nd python script to add robot's algorithm
 import time
 from settings import person_location, is_button_pressed, robot_location
+import run_streams
 from botVector import *
 from person_stream import *
 from Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Motor import *
@@ -141,13 +142,13 @@ def movement() -> None:
             
             case RobotStatus.DUTY.value:
                 #change to appropriate function
-                r_locationInitial = getLocation(robot_tag)
+                r_locationInitial = robot_location
                 motor.setMotorModel(1000,1000,1000,1000)
                 time.sleep(1)
                 motor.destroy()
                 #change to appropriate function
                 p_location = person_location
-                r_locationCurrent = getLocation(robot_tag)
+                r_locationCurrent = robot_location
 
                 r_vector = Vector(r_locationCurrent, r_locationInitial)
                 r_p_vector = Vector(p_location, r_locationCurrent)
@@ -157,17 +158,15 @@ def movement() -> None:
 
                 while(not check_approach(5)):
                     motor.setMotorModel(1000,1000,1000,1000)
+                    time.sleep(0.3)
                 motor.destroy()
                 status = RobotStatus.IDLE.value
                 break
 
 
 def main():
-    #test values
-    p_location = Point(0, person_y)
-    r_location = Point()
-
-    turn(p_location, r_location)
+    run_streams.streaming_endpoints()
+    movement()
 
 
 if __name__ == '__main__':
