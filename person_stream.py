@@ -1,14 +1,15 @@
 import json
 import settings # initiate global variables
-import add_datastream # add person location and robot location
+import data_stream # add person location and robot location
 import pyodbc as sql
 from botVector import *
-from button_press import *
+from event_stream import *
 
 count = 0 # count for adding data rows to SQL server
 url = "wss://dash.iiwari.cloud/api/v1/sites/017bcaaf-a074-f5fc-0b1e-083f26226deb/"
 email ="savonia"
 pw    ="mAhti5aar1"
+person_tag = "0d47-3234-0474-5917"
 
 def module_info(mod):
    print(mod+" module  missing")
@@ -30,10 +31,10 @@ def on_message(ws, message):
 
    d = json.loads(message)
 
-   if("x" in d):
-      print(d)
+   if("x" in d and  "node" in d and d["node"] == person_tag):
       if(settings.is_button_pressed == True):
-         add_datastream.add_location_data(d)
+         print(d)
+         data_stream.person_location_data(d)
          print("Button: {}, {}".format(settings.person_location.getX(), settings.person_location.getY()))
       
       #buffer.append(d)

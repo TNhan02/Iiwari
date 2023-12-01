@@ -1,11 +1,12 @@
 #this is the 2nd python script to add robot's algorithm
 import time
+import settings
 from botVector import *
-from location_tracking import *
+from person_stream import *
 from button_press import *
 from Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Motor import *
 from Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Light import *
-from Iiwari.Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Light import *
+#from Iiwari.Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Light import *
 from enum import Enum
 
 # this class is used for setting the robot's status when an event occurs
@@ -163,7 +164,7 @@ def movement() -> None:
 
 
 def approaching_person(tag_id):
-    if(is_button_pressed == True):
+    if(settings.is_button_pressed == True):
         status = 2 # robot on duty for approaching a person
 
         # first move is to move forward
