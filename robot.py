@@ -1,6 +1,6 @@
 #this is the 2nd python script to add robot's algorithm
 import time
-from settings import person_location, is_button_pressed
+from settings import person_location, is_button_pressed, robot_location
 from botVector import *
 from person_stream import *
 from Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Motor import *
@@ -42,7 +42,7 @@ def getLocation(tag_code: str) -> Point:
 #should return a status of button (is it pressed or not) 
 #if true - return 2
 def getStatus():
-    if(settings.is_button_pressed == True):
+    if(is_button_pressed == True):
         status = 2
         return status
     return status
@@ -160,17 +160,6 @@ def movement() -> None:
                 motor.destroy()
                 status = RobotStatus.IDLE.value
                 break
-
-
-def approaching_person(tag_id):
-    if(settings.is_button_pressed == True):
-        status = 2 # robot on duty for approaching a person
-
-        # first move is to move forward
-        motor.setMotorModel(1000, 1000, 1000, 1000)
-    else:
-        print("Robot on idle state")
-        
 
 
 def main():
