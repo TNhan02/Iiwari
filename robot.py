@@ -1,5 +1,6 @@
 #this is the 2nd python script to add robot's algorithm
 import time
+from settings import person_location, is_button_pressed
 from botVector import *
 from location_tracking import *
 from button_press import *
@@ -107,7 +108,7 @@ def check_approach(accept_distance: float) -> bool:
     r_y = r_location.getY()
 
     #change function
-    p_location = getLocation()
+    p_location = person_location
     p_x = p_location.getX()
     p_y = p_location.getY()
 
@@ -146,7 +147,7 @@ def movement() -> None:
                 time.sleep(1)
                 motor.destroy()
                 #change to appropriate function
-                p_location = getLocation(person_tag)
+                p_location = person_location
                 r_locationCurrent = getLocation(robot_tag)
 
                 r_vector = Vector(r_locationCurrent, r_locationInitial)
