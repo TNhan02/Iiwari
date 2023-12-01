@@ -1,7 +1,7 @@
 import json
 import settings # initiate global variables 
-import add_datastream # add person location and robot location
-from location_tracking import *
+import data_stream # add person location and robot location
+import person_stream
 from botVector import *
 
 url = "wss://dash.iiwari.cloud/api/v1/sites/017bcaaf-a074-f5fc-0b1e-083f26226deb/"
@@ -45,7 +45,7 @@ def on_open(ws):
    print("### event streaming opened ###")
 
 def event_streaming():
-   r = login(email, pw)
+   r = person_stream.login(email, pw)
    token = r.json()
 
    query = url + "events/stream?token=" + token['token']
