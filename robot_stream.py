@@ -35,18 +35,8 @@ def on_message(ws, message):
       print(d)
       data_stream.robot_location_data(d)
       print("Robot: {}, {}".format(settings.person_location.getX(), settings.person_location.getY()))  
-      
-      #buffer.append(d)
-      #count += 1
-
-      #if(count == 5):
-         #import_to_sql(buffer)
-         #print("{} new rows of data inserted successfully".format(count))
-
-         #buffer = []
-         #count = 0
    else:
-      print("Key doesn't exist in JSON data")
+      print("Robot doesn't move")
 def sql_connection():
    connection = sql.connect('Driver={SQL Server};'
                       'Server=10.211.48.5;'
