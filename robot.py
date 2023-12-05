@@ -119,12 +119,16 @@ def check_approach(accept_distance: float) -> bool:
         return True
     
 
-def rotate(angle: float) -> None:
+def rotate(angle: float, person_y: float, robot_y: float) -> None:
     rotate_angle = 180-angle
     rotation_time = rotate_angle* (0.88/90)
-    motor.setMotorModel(2000,2000,-2000,-2000)
+
+    if(robot_y < person_y):
+        motor.setMotorModel(2000,2000,-2000,-2000)
+    elif(robot_y > person_y):
+        motor.setMotorModel(-2000,-2000,2000,2000)
     time.sleep(rotation_time)
-    motor.destroy()
+    motor.setMotorModel(0,0,0,0)
 
 #Final version of the movement algorithm
 

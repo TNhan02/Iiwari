@@ -50,4 +50,5 @@ def angleBetweenVectors(vector1: Vector, vector2: Vector):
     cos_a = scalarProduct(vector1, vector2) / moduleProduct(vector1, vector2)
     return math.acos(cos_a)*180/math.pi
 
+
     
