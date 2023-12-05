@@ -1,6 +1,5 @@
 import json
 import settings # initiate global variables 
-import data_stream # add person location and robot location
 import person_stream
 from botVector import *
 

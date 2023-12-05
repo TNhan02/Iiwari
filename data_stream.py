@@ -1,19 +1,19 @@
 import settings
 import botVector
 
-# define alpha for filtering
-filtered_value = None
+# define alpha for filtering, filtered x and y of person and robot
+alpha = 0.5
+filtered_value = 0.0
 filtered_person_x = None 
 filtered_person_y = None
 filtered_robot_x = None
 filtered_robot_y = None
-alpha = 0.5
 
 #TODO: how to apply it when streaming?
 # this function is used to filter data to make it more calm
 def exponential_filter(incoming_value):
    global filtered_value
-   if(incoming_value == None):
+   if(incoming_value != None):
       filtered_value = alpha * incoming_value + (1 - alpha) * filtered_value
 
    return filtered_value

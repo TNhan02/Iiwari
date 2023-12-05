@@ -35,7 +35,7 @@ def on_message(ws, message):
       if(settings.is_button_pressed == True):
          print(d)
          data_stream.person_location_data(d)
-         print("Person: {}, {}".format(settings.person_location.getX(), settings.person_location.getY()))
+         print("Person: {}, {}".format(settings.person_location.getX(), settings.person_location.getY()))   
       
       #buffer.append(d)
       #count += 1
@@ -47,7 +47,7 @@ def on_message(ws, message):
          #buffer = []
          #count = 0
    else:
-      print("Key doesn't exist in JSON data")
+      print("Person doesn't move")
 def sql_connection():
    connection = sql.connect('Driver={SQL Server};'
                       'Server=10.211.48.5;'
@@ -92,7 +92,7 @@ def login(email,pw):
    print("Login success!")
    return r 
 
-def location_streaming():
+def person_streaming():
    r = login(email, pw)
    token = r.json()
 
@@ -110,4 +110,5 @@ def location_streaming():
 
 
 if __name__ == "__main__":
-   location_streaming()
+   settings.init()
+   person_streaming()
