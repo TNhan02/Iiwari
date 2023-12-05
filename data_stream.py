@@ -14,9 +14,7 @@ alpha = 0.5
 def exponential_filter(incoming_value):
    global filtered_value
    if(incoming_value == None):
-      filtered_value = incoming_value
-   else:
-      filtered_value = alpha * incoming_value + (1 - alpha) * incoming_value
+      filtered_value = alpha * incoming_value + (1 - alpha) * filtered_value
 
    return filtered_value
 

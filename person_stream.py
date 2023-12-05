@@ -35,7 +35,7 @@ def on_message(ws, message):
       if(settings.is_button_pressed == True):
          print(d)
          data_stream.person_location_data(d)
-         print("Button: {}, {}".format(settings.person_location.getX(), settings.person_location.getY()))
+         print("Person: {}, {}".format(settings.person_location.getX(), settings.person_location.getY()))
       
       #buffer.append(d)
       #count += 1
@@ -90,16 +90,7 @@ def login(email,pw):
    L={ "Email" : email , "Password" : pw }
    r = requests.post(url,json=L,headers=H)
    print("Login success!")
-   return r
-
-def get_location_button_pressed():
-   """
-   for data_location in settings.buffer_location:
-      for data_event in settings.buffer_event:
-         if(data_location["node"] == data_event["node"] and settings.is_button_pressed == True):
-            print("{}, {}".format(data_location["x"], data_location["y"]))
-            return Point(data_location["x"], data_location["y"])
-   """   
+   return r 
 
 def location_streaming():
    r = login(email, pw)

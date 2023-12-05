@@ -15,7 +15,7 @@ class RobotStatus(Enum):
     DUTY = 2
     LOST = 3
 
-robot_tag = "0d47-3234-0474-81b9"
+robot_tag = "1347-3932-1592-420a"
 person_tag = "0d47-3234-0474-848b"
 site = "017bcaaf-a074-f5fc-0b1e-083f26226deb" # savonia
 token = login("savonia", "mAhti5aar1")
@@ -43,7 +43,7 @@ def getLocation(tag_code: str) -> Point:
 #should return a status of button (is it pressed or not) 
 #if true - return 2
 def getStatus():
-    if(is_button_pressed == True):
+    if(settings.is_button_pressed == True):
         status = 2
         return status
     return status
@@ -108,7 +108,7 @@ def check_approach(accept_distance: float) -> bool:
     r_y = r_location.getY()
 
     #change function
-    p_location = person_location
+    p_location = settings.person_location
     p_x = p_location.getX()
     p_y = p_location.getY()
 
