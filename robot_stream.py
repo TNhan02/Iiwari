@@ -9,7 +9,7 @@ count = 0 # count for adding data rows to SQL server
 url = "wss://dash.iiwari.cloud/api/v1/sites/017bcaaf-a074-f5fc-0b1e-083f26226deb/"
 email ="savonia"
 pw    ="mAhti5aar1"
-robot_tag = "0d47-3234-0474-81b9"
+robot_tag = "1347-3932-1592-420a"
 
 def module_info(mod):
    print(mod+" module  missing")
@@ -33,7 +33,7 @@ def on_message(ws, message):
 
    if("x" in d and  "node" in d and d["node"] == robot_tag):
       print(d)
-      data_stream.add_location_data(d)
+      data_stream.robot_location_data(d)
       print("Robot: {}, {}".format(settings.person_location.getX(), settings.person_location.getY()))  
       
       #buffer.append(d)

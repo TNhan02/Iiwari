@@ -32,8 +32,6 @@ def on_message(ws, message):
          settings.is_button_pressed = True
       else:
          settings.is_button_pressed = False
-      #settings.is_button_pressed = True
-      #add_datastream.add_event_data(d)
 
 def on_error(ws, error):
    print(error)
