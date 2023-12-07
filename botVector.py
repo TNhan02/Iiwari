@@ -18,6 +18,13 @@ class Vector():
     def __init__(self, finalPoint: Point, initialPoint: Point):
         self.x = finalPoint.getX() - initialPoint.getX()
         self.y = finalPoint.getY() - initialPoint.getY()
+        self.finalPoint = finalPoint
+        self.initialPoint = initialPoint
+
+    
+    def __recalculate(self):
+        self.x = self.finalPoint.getX() - self.initialPoint.getX()
+        self.y = self.finalPoint.getY() - self.initialPoint.getY()
 
 
     def getX(self):
@@ -27,6 +34,11 @@ class Vector():
     def getY(self):
         return self.y
     
+
+    def changePoint(self, finalPoint: Point):
+        self.finalPoint = finalPoint
+        self.__recalculate()
+
 
     def countMagnitude(self):
         return math.sqrt(self.x**2 + self.y**2)
@@ -49,6 +61,7 @@ def angleBetweenVectors(vector1: Vector, vector2: Vector):
 
     cos_a = scalarProduct(vector1, vector2) / moduleProduct(vector1, vector2)
     return math.acos(cos_a)*180/math.pi
+
 
 
     
