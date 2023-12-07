@@ -1,11 +1,6 @@
 import botVector
 
 filtered_value = 0.0
-is_button_pressed
-
-def init():
-    global is_button_pressed
-    is_button_pressed = False
 
 def exponential_filter(incoming_value):
     global filtered_value
@@ -15,6 +10,10 @@ def exponential_filter(incoming_value):
     return filtered_value
 
 class Collector():
+    personLocation = botVector.Point()
+    robotLocation = botVector.Point()
+    initialRobotLocation = None
+
     def __init__(self) -> None:
         self.personLocation = botVector.Point()
         self.robotLocation = botVector.Point()
