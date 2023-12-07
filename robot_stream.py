@@ -1,8 +1,7 @@
 import json
 import settings # initiate global variables
-import data_stream # add person location and robot location
 import pyodbc as sql
-from botVector import *
+import botVector
 from event_stream import *
 
 count = 0 # count for adding data rows to SQL server
@@ -33,8 +32,9 @@ def on_message(ws, message):
 
    if("x" in d and  "node" in d and d["node"] == robot_tag):
       print(d)
-      data_stream.robot_location_data(d)
-      print("Robot: {}, {}".format(settings.person_location.getX(), settings.person_location.getY()))  
+      robot_location = botVector.Point(settings.exponential_filter(d["x"]), settings.exponential_filter(d["y"]))
+      settings.collector.addRobotLocation(robot_location)
+      print("Robot: X:{}, Y:{}".format(robot_location.getX(), robot_location.getY()))
    else:
       print("Robot doesn't move")
 def sql_connection():
