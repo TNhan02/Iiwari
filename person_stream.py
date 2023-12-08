@@ -34,7 +34,7 @@ def on_message(ws, message):
       print(d)
       person_location = botVector.Point(settings.exponential_filter(d["x"]), settings.exponential_filter(d["y"]))
       settings.collector.addPersonLocation(person_location)
-      print("Person: X:{}, Y:{}".format(person_location.getX(), person_location.getY()))
+      print("{}".format(settings.collector.getPersonLocation()))
 
       #buffer.append(d)
       #count += 1
@@ -109,5 +109,4 @@ def person_streaming():
 
 
 if __name__ == "__main__":
-   settings.init()
    person_streaming()

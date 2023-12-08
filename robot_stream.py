@@ -34,9 +34,10 @@ def on_message(ws, message):
       print(d)
       robot_location = botVector.Point(settings.exponential_filter(d["x"]), settings.exponential_filter(d["y"]))
       settings.collector.addRobotLocation(robot_location)
-      print("Robot: X:{}, Y:{}".format(robot_location.getX(), robot_location.getY()))
+      print("{}".format(settings.collector.getRobotLocation()))
    else:
       print("Robot doesn't move")
+      
 def sql_connection():
    connection = sql.connect('Driver={SQL Server};'
                       'Server=10.211.48.5;'
