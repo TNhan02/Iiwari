@@ -103,12 +103,12 @@ def turn(p_location: Point, r_location: Point) -> None:
 
 def check_approach(accept_distance: float) -> bool:
     #change function of robot
-    r_location = settings.robot_location
+    r_location = settings.collector.getRobotLocation()
     r_x = r_location.getX()
     r_y = r_location.getY()
 
     #change function of person
-    p_location = settings.person_location
+    p_location = settings.collector.getPersonLocation()
     p_x = p_location.getX()
     p_y = p_location.getY()
 
@@ -132,40 +132,43 @@ def rotate(angle: float, robot_y: float, person_y: float) -> None:
 #Final version of the movement algorithm
 
 def movement() -> None:
-    #status = RobotStatus.IDLE.value
-    """
+    status = RobotStatus.IDLE
+    
     while True:
         match (status):
-            case RobotStatus.IDLE.value:
+            case RobotStatus.IDLE:
                 if(settings.is_button_pressed):
-                    status = RobotStatus.DUTY.value
-                    break
+                    status = RobotStatus.DUTY
+                    continue
                 else:
                     time.sleep(2)
                 continue
             
-            case RobotStatus.DUTY.value:
+            case RobotStatus.DUTY:
                 #change to appropriate function
-                r_locationInitial = settings.robot_location
+                motor.setMotorModel(1000, 1000, 1000, 1000)
+                time.sleep(2)
+                motor.setMotorModel(0,0,0,0)
+                r_locationInitial = settings.collector.getInitRobotLocation()
                 motor.setMotorModel(1000,1000,1000,1000)
-                time.sleep(1)
-                motor.destroy()
+                time.sleep(3)
+                motor.setMotorModel(0,0,0,0)
                 #change to appropriate function
-                p_location = settings.person_location
-                r_locationCurrent = settings.robot_location
+                p_location = settings.collector.getPersonLocation()
+                r_locationCurrent = settings.collector.getRobotLocation()
 
                 r_vector = Vector(r_locationCurrent, r_locationInitial)
                 r_p_vector = Vector(p_location, r_locationCurrent)
                 angle = angleBetweenVectors(r_vector, r_p_vector)
                 #calibration is required 
-                rotate(angle)
+                rotate(angle, r_locationCurrent.getY(), p_location.getY())
 
-                while(not check_approach(5)):
+                while(not check_approach(2)):
                     motor.setMotorModel(1000,1000,1000,1000)
-                    time.sleep(0.3)
-                motor.destroy()
-                status = RobotStatus.IDLE.value
-                break
+                    time.sleep(1)
+                motor.setMotorModel(0,0,0,0)
+                status = RobotStatus.IDLE
+                continue
     """
     time.sleep(3)
     motor.setMotorModel(1000,1000,1000,1000)
@@ -197,6 +200,7 @@ def movement() -> None:
         motor.setMotorModel(1000,1000,1000,1000)
         time.sleep(0.3)
     motor.setMotorModel(0,0,0,0)
+    """
 
 def main():
     movement()
