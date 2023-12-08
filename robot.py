@@ -22,7 +22,6 @@ status = RobotStatus(1)
 # check if robot is near to the person or not
 # accept distance is the radius of the area marking the robot has arrived
 def check_approach(accept_distance: float) -> bool:
-<<<<<<< HEAD
     #change function
     r_location = getLocation()
     r_x = r_location.getX()
@@ -30,7 +29,6 @@ def check_approach(accept_distance: float) -> bool:
 
     #change function
     p_location = settings.person_location
-=======
     #change function of robot
     r_location = settings.collector.getRobotLocation()
     r_x = r_location.getX()
@@ -38,7 +36,6 @@ def check_approach(accept_distance: float) -> bool:
 
     #change function of person
     p_location = settings.collector.getPersonLocation()
->>>>>>> 7cb71259fdfe42bcc8b2de76cee0bb27d0a359ea
     p_x = p_location.getX()
     p_y = p_location.getY()
 
@@ -60,10 +57,7 @@ def rotate(angle: float) -> None:
 #Final version of the movement algorithm
 def movement() -> None:
     status = RobotStatus.IDLE
-<<<<<<< HEAD
-=======
-    
->>>>>>> 7cb71259fdfe42bcc8b2de76cee0bb27d0a359ea
+
     while True:
         match (status):
             case RobotStatus.IDLE:
@@ -76,26 +70,25 @@ def movement() -> None:
             
             case RobotStatus.DUTY:
                 #change to appropriate function
-<<<<<<< HEAD
+
                 r_locationInitial = getLocation(robot_tag)
-=======
                 motor.setMotorModel(1000, 1000, 1000, 1000)
                 time.sleep(2)
                 motor.setMotorModel(0,0,0,0)
                 r_locationInitial = settings.collector.getInitRobotLocation()
->>>>>>> 7cb71259fdfe42bcc8b2de76cee0bb27d0a359ea
                 motor.setMotorModel(1000,1000,1000,1000)
                 time.sleep(3)
                 motor.setMotorModel(0,0,0,0)
 
                 #change to appropriate function
+                #change to appropriate function
+<<<<<<< HEAD
+                #change to appropriate function 
 <<<<<<< HEAD
                 p_location = person_location
                 r_locationCurrent = robot_location
-=======
                 p_location = settings.collector.getPersonLocation()
                 r_locationCurrent = settings.collector.getRobotLocation()
->>>>>>> 7cb71259fdfe42bcc8b2de76cee0bb27d0a359ea
 
                 r_vector = Vector(r_locationCurrent, r_locationInitial)
                 r_p_vector = Vector(p_location, r_locationCurrent)
@@ -105,7 +98,7 @@ def movement() -> None:
 
                 while(not check_approach(2)):
                     motor.setMotorModel(1000,1000,1000,1000)
-<<<<<<< HEAD
+
                 motor.destroy()
                 status = RobotStatus.IDLE.value
                 break
@@ -121,11 +114,7 @@ def main():
 
 if __name__ == '__main__':
     main()
-=======
-                    time.sleep(1)
-                motor.setMotorModel(0,0,0,0)
-                status = RobotStatus.IDLE
-                continue
+
     """
     time.sleep(3)
     motor.setMotorModel(1000,1000,1000,1000)
@@ -158,4 +147,3 @@ if __name__ == '__main__':
         time.sleep(0.3)
     motor.setMotorModel(0,0,0,0)
     """
->>>>>>> 7cb71259fdfe42bcc8b2de76cee0bb27d0a359ea
