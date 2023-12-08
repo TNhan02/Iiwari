@@ -79,12 +79,6 @@ def movement() -> None:
                 motor.setMotorModel(1000,1000,1000,1000)
                 time.sleep(3)
                 motor.setMotorModel(0,0,0,0)
-
-                #change to appropriate function
-                #change to appropriate function
-<<<<<<< HEAD
-                #change to appropriate function 
-<<<<<<< HEAD
                 p_location = person_location
                 r_locationCurrent = robot_location
                 p_location = settings.collector.getPersonLocation()
