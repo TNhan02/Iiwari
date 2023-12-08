@@ -15,92 +15,12 @@ class RobotStatus(Enum):
     DUTY = 2
     LOST = 3
 
-robot_tag = "0d47-3234-0474-81b9"
-person_tag = "0d47-3234-0474-848b"
-site = "017bcaaf-a074-f5fc-0b1e-083f26226deb" # savonia
-token = login("savonia", "mAhti5aar1")
-
 # initialize robot's components
 motor = Motor()
-light = Light()
 status = RobotStatus(1)
 
-# declare main points' coordinates
-
-person_x = 25
-person_y = 25
-bot_x = 0
-bot_y = 0
-satisf_inaccuracy = 3
-
-#TODO: finish a function
-#should return a current position of a tag
-def getLocation(tag_code: str) -> Point:
-    pass
-
-
-#TODO finish a function
-#should return a status of button (is it pressed or not) 
-#if true - return 2
-def getStatus():
-    if(settings.is_button_pressed == True):
-        status = 2
-        return status
-    return status
-
-
-# for demonstration purpose 
-# the main idea for the demonstration algorithm is to align first (x-coordinate) 
-# then (y-coordinate) with usage of vectors
-def move_x(p_location: Point, r_location: Point) -> None:
-    p_x = p_location.getX()
-    r_x = r_location.getX()
-    error = p_x - r_x
-    #move forward
-    if(error > 0):
-        while(abs(error) > satisf_inaccuracy):
-            motor.setMotorModel(1000,1000,1000,1000)
-            r_x = getLocation(robot_tag).getX()
-            error = p_x - r_x
-    #move backward
-    if(error < 0):
-        while(abs(error) > satisf_inaccuracy):
-            motor.setMotorModel(-1000,-1000,-1000,-1000)
-            r_x = getLocation(robot_tag).getX()
-            error = p_x - r_x
-
-
-
-def move_y(p_location: Point, r_location: Point) -> None:
-    p_y = p_location.getY()
-    r_y = r_location.getY()
-    error = p_y - r_y
-    #move forward
-    if(error > 0):
-        while(abs(error) > satisf_inaccuracy):
-            motor.setMotorModel(1000,1000,1000,1000)
-            r_y = getLocation(robot_tag).getY()
-            error = p_y - r_y
-    #move backward
-    if(error < 0):
-        while(abs(error) > satisf_inaccuracy):
-            motor.setMotorModel(-1000,-1000,-1000,-1000)
-            r_y = getLocation(robot_tag).getY()
-            error = p_y - r_y
-
-
-
-def turn(p_location: Point, r_location: Point) -> None:
-    r_y = r_location.getY()
-    p_y = p_location.getY()
-    #turn right 90 degrees
-    if(r_y - p_y > 0):
-        motor.setMotorModel(100, 2000, -2000, 100)
-    #turn left 90 degrees 
-    if(r_y - p_y < 0):
-        motor.setMotorModel(-2000, 100, 100, 2000)
-
-
+# check if robot is near to the person or not
+# accept distance is the radius of the area marking the robot has arrived
 def check_approach(accept_distance: float) -> bool:
     #change function of robot
     r_location = settings.collector.getRobotLocation()
@@ -129,8 +49,8 @@ def rotate(angle: float, robot_y: float, person_y: float) -> None:
     time.sleep(rotation_time)
     motor.setMotorModel(0,0,0,0)
 
-#Final version of the movement algorithm
 
+#Final version of the movement algorithm
 def movement() -> None:
     status = RobotStatus.IDLE
     
@@ -153,6 +73,7 @@ def movement() -> None:
                 motor.setMotorModel(1000,1000,1000,1000)
                 time.sleep(3)
                 motor.setMotorModel(0,0,0,0)
+
                 #change to appropriate function
                 p_location = settings.collector.getPersonLocation()
                 r_locationCurrent = settings.collector.getRobotLocation()
@@ -201,10 +122,3 @@ def movement() -> None:
         time.sleep(0.3)
     motor.setMotorModel(0,0,0,0)
     """
-
-def main():
-    movement()
-
-
-if __name__ == '_main_':
-    main()

@@ -37,6 +37,7 @@ def on_message(ws, message):
       print("{}".format(settings.collector.getRobotLocation()))
    else:
       print("Robot doesn't move")
+      
 def sql_connection():
    connection = sql.connect('Driver={SQL Server};'
                       'Server=10.211.48.5;'
