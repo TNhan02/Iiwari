@@ -22,10 +22,6 @@ status = RobotStatus(1)
 # check if robot is near to the person or not
 # accept distance is the radius of the area marking the robot has arrived
 def check_approach(accept_distance: float) -> bool:
-    #change function
-    r_location = getLocation()
-    r_x = r_location.getX()
-    r_y = r_location.getY()
 
     #change function
     p_location = settings.person_location
@@ -46,12 +42,18 @@ def check_approach(accept_distance: float) -> bool:
         return True
     
 
-def rotate(angle: float) -> None:
-    rotate_angle = 180-angle
+def rotate(angle: float, r_locationCurrent: Point, p_location: Point) -> None:
+    if(r_locationCurrent.getX() >= p_location.getX()):
+        rotate_angle = 180-angle
+    else:
+        rotate_angle = angle
     rotation_time = rotate_angle* (0.88/90)
-    motor.setMotorModel(2000,2000,-2000,-2000)
+    if(r_locationCurrent.getY >= p_location.getY()):
+        motor.setMotorModel(2000,2000,-2000,-2000)
+    else:
+        motor.setMotorModel(-2000,-2000,2000,2000)
     time.sleep(rotation_time)
-    motor.destroy()
+    motor.setMotorModel(0,0,0,0)
 
 
 #Final version of the movement algorithm
@@ -88,7 +90,7 @@ def movement() -> None:
                 r_p_vector = Vector(p_location, r_locationCurrent)
                 angle = angleBetweenVectors(r_vector, r_p_vector)
                 #calibration is required 
-                rotate(angle, r_locationCurrent.getY(), p_location.getY())
+                rotate(angle, r_locationCurrent, p_location)
 
                 while(not check_approach(2)):
                     motor.setMotorModel(1000,1000,1000,1000)
