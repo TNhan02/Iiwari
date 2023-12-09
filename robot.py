@@ -22,9 +22,6 @@ status = RobotStatus(1)
 # check if robot is near to the person or not
 # accept distance is the radius of the area marking the robot has arrived
 def check_approach(accept_distance: float) -> bool:
-
-    #change function
-    p_location = settings.person_location
     #change function of robot
     r_location = settings.collector.getRobotLocation()
     r_x = r_location.getX()
@@ -43,6 +40,7 @@ def check_approach(accept_distance: float) -> bool:
     
 
 def rotate(angle: float, r_locationCurrent: Point, p_location: Point) -> None:
+    rotate_angle = 0
     if(r_locationCurrent.getX() >= p_location.getX()):
         rotate_angle = 180-angle
     else:
@@ -72,8 +70,6 @@ def movement() -> None:
             
             case RobotStatus.DUTY:
                 #change to appropriate function
-
-                r_locationInitial = getLocation(robot_tag)
                 motor.setMotorModel(1000, 1000, 1000, 1000)
                 time.sleep(2)
                 motor.setMotorModel(0,0,0,0)
@@ -102,11 +98,7 @@ def movement() -> None:
 
 def main():
     #test values
-    p_location = Point(0, person_y)
-    r_location = Point()
-
-    turn(p_location, r_location)
-
+    movement()
 
 if __name__ == '__main__':
     main()
