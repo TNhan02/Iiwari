@@ -1,12 +1,10 @@
 #this is the 2nd python script to add robot's algorithm
 import time
-from settings import person_location, is_button_pressed, robot_location
-import run_streams
+from settings import *
 from botVector import *
 from person_stream import *
 from Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Motor import *
 from Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Light import *
-from Iiwari.Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Light import *
 from enum import Enum
 
 # this class is used for setting the robot's status when an event occurs
@@ -77,8 +75,6 @@ def movement() -> None:
                 motor.setMotorModel(1000,1000,1000,1000)
                 time.sleep(3)
                 motor.setMotorModel(0,0,0,0)
-                p_location = person_location
-                r_locationCurrent = robot_location
                 p_location = settings.collector.getPersonLocation()
                 r_locationCurrent = settings.collector.getRobotLocation()
 
@@ -91,6 +87,6 @@ def movement() -> None:
                 while(not check_approach(2)):
                     motor.setMotorModel(1000,1000,1000,1000)
 
-                motor.destroy()
+                motor.setMotorModel(0,0,0,0)
                 status = RobotStatus.IDLE.value
                 break

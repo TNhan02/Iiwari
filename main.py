@@ -1,9 +1,7 @@
 import person_stream
 import event_stream
 import robot_stream
-import settings
 import robot
-import settings
 from threading import Thread
 
 # this is used for streaming 2 endpoints at the same time
