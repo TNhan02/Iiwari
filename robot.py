@@ -4,7 +4,6 @@ from settings import *
 from botVector import *
 from person_stream import *
 from Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Motor import *
-from Freenove_4WD_Smart_Car_Kit_for_Raspberry_Pi.Code.Server.Light import *
 from enum import Enum
 
 # this class is used for setting the robot's status when an event occurs
@@ -71,18 +70,19 @@ def movement() -> None:
                 motor.setMotorModel(1000, 1000, 1000, 1000)
                 time.sleep(2)
                 motor.setMotorModel(0,0,0,0)
-                r_locationInitial = settings.collector.getInitRobotLocation()
+                robotInitialLocation = settings.collector.getInitRobotLocation()
+                personInitialLocation = settings.collector.getInitRobotLocation()
                 motor.setMotorModel(1000,1000,1000,1000)
                 time.sleep(3)
                 motor.setMotorModel(0,0,0,0)
-                p_location = settings.collector.getPersonLocation()
-                r_locationCurrent = settings.collector.getRobotLocation()
+                personCurrentLocation = settings.collector.getPersonLocation()
+                robotCurrentLocation = settings.collector.getRobotLocation()
 
-                r_vector = Vector(r_locationCurrent, r_locationInitial)
-                r_p_vector = Vector(p_location, r_locationCurrent)
+                r_vector = Vector(robotCurrentLocation, robotInitialLocation)
+                r_p_vector = Vector(personCurrentLocation, robotCurrentLocation)
                 angle = angleBetweenVectors(r_vector, r_p_vector)
                 #calibration is required 
-                rotate(angle, r_locationCurrent, p_location)
+                rotate(angle, robotCurrentLocation, personCurrentLocation)
 
                 while(not check_approach(2)):
                     motor.setMotorModel(1000,1000,1000,1000)

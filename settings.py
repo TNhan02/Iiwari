@@ -1,25 +1,35 @@
 import botVector
 
-filtered_value = 0.0
+filtered_x = 0.0
+filtered_y = 0.0
 
-def exponential_filter(incoming_value):
-    global filtered_value
-    if(incoming_value != None):
-        filtered_value = 0.5 * incoming_value + (1 - 0.5) * filtered_value
-
-    return filtered_value
+def exponential_filter(incoming_value, coordinate):
+    global filtered_x, filtered_y
+    if coordinate == 'x':
+        if(incoming_value != None):
+            filtered_x = 0.7 * incoming_value + (1 - 0.7) * filtered_x
+        return filtered_x
+    elif coordinate == 'y':
+        if(incoming_value != None):
+            filtered_y = 0.7 * incoming_value + (1 - 0.7) * filtered_y
+        return filtered_y
+    
 
 class Collector():
+    initialPersonLocation : botVector.Point = botVector.Point()
     personLocation: botVector.Point = botVector.Point()
     robotLocation: botVector.Point = botVector.Point()
     initialRobotLocation: botVector.Point = None
 
     def __init__(self) -> None:
+        self.initialPersonLocation = botVector.Point()
         self.personLocation = botVector.Point()
         self.robotLocation = botVector.Point()
         self.initialRobotLocation = botVector.Point()
 
     def addPersonLocation(self, personLocation: botVector.Point):
+        if(self.initialPersonLocation == botVector.Point(0,0)):
+            self.initialPersonLocation = personLocation
         self.personLocation = personLocation
 
     def addRobotLocation(self, robotLocation: botVector.Point):
@@ -36,7 +46,9 @@ class Collector():
         self.robotLocation = None
         self.initialRobotLocation = None 
 
-
+    def getInitPersonLocation(self):
+        print("Initial Person: {}, {}".format(self.initialPersonLocation.getX(), self.initialPersonLocation.getY()))
+        return botVector.Point(self.personLocation.getX(), self.personLocation.getY())
 
     def getPersonLocation(self):
         print("Person: {}, {}".format(self.personLocation.getX(), self.personLocation.getY()))

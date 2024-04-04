@@ -6,8 +6,8 @@ from event_stream import *
 
 count = 0 # count for adding data rows to SQL server
 url = "wss://dash.iiwari.cloud/api/v1/sites/017bcaaf-a074-f5fc-0b1e-083f26226deb/"
-email ="savonia"
-pw    ="mAhti5aar1"
+email =""
+pw    ="" #add password
 robot_tag = "1347-3932-1592-420a"
 
 def module_info(mod):
@@ -32,38 +32,11 @@ def on_message(ws, message):
 
    if("x" in d and  "node" in d and d["node"] == robot_tag):
       print(d)
-      robot_location = botVector.Point(settings.exponential_filter(d["x"]), settings.exponential_filter(d["y"]))
+      robot_location = botVector.Point(settings.exponential_filter(d["x"], 'x'), settings.exponential_filter(d["y"], 'y'))
       settings.collector.addRobotLocation(robot_location)
       print("{}".format(settings.collector.getRobotLocation()))
    else:
-      print("Robot doesn't move")
-      
-def sql_connection():
-   connection = sql.connect('Driver={SQL Server};'
-                      'Server=10.211.48.5;'
-                      'Database=indoor_positioning;'
-                      'UID=sa;'
-                      'PWD=testPass_123_XX')
-   cursor = connection.cursor()
-
-   print("SQL server is connected")
-   return cursor
-
-def import_to_sql(list):
-   db = sql_connection()
-   
-   # add each row in a list to server
-   for content in list:
-      db.execute("INSERT INTO position(ts, node, x, y, z, q, alg) VALUES (?,?,?,?,?,?,?)",
-            content['ts'],
-            content['node'],
-            content['x'], 
-            content['y'], 
-            content['z'], 
-            content['q'], 
-            content['alg'])
-   
-   db.commit()       
+      print("Robot doesn't move")       
 
 def on_error(ws, error):
    print(error)

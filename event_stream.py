@@ -4,8 +4,8 @@ import person_stream
 from botVector import *
 
 url = "wss://dash.iiwari.cloud/api/v1/sites/017bcaaf-a074-f5fc-0b1e-083f26226deb/"
-email = "savonia"
-pw    = "mAhti5aar1"
+email = ""
+pw    = "" #add password
 site  = "017bcaaf-a074-f5fc-0b1e-083f26226deb" #savonia AMK
 
 def module_info(mod):
